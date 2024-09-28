@@ -15,16 +15,17 @@ sklearn to demonstrate Information Retrieval using the Vector Space Model.
 5. Execute a sample query and display the search results along with similarity scores.
 
 ### Program:
-import requests
-from bs4 import BeautifulSoup
+import nltk
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import string
-import nltk
+
+# Download necessary NLTK data
 nltk.download('punkt')
 nltk.download('stopwords')
+
 # Sample documents stored in a dictionary
 documents = {
     "doc1": "This is the first document.",
@@ -46,29 +47,39 @@ preprocessed_docs = {doc_id: preprocess_text(doc) for doc_id, doc in documents.i
 tfidf_vectorizer = TfidfVectorizer()
 tfidf_matrix = tfidf_vectorizer.fit_transform(preprocessed_docs.values())
 
-# Calculate cosine similarity between query and documents
+# Function to search and rank documents based on the query
 def search(query, tfidf_matrix, tfidf_vectorizer):
-    //TYPE YOUR CODE HERE
+    preprocessed_query = preprocess_text(query)
+    query_vector = tfidf_vectorizer.transform([preprocessed_query])
+
+    # Calculate cosine similarity between query and documents
+    similarity_scores = cosine_similarity(query_vector, tfidf_matrix)
+
+    # Sort documents based on similarity scores
+    sorted_indexes = similarity_scores.argsort()[0][::-1]
+
+    # Return sorted documents along with their similarity scores
+    results = [(list(preprocessed_docs.keys())[i], list(documents.values())[i], similarity_scores[0, i]) for i in sorted_indexes]
     return results
 
-# Get input from user
-query = input("Enter your query: ")
+# Main function to take input and display results
+if __name__ == "__main__":
+    query = input("Enter your query: ")
+    search_results = search(query, tfidf_matrix, tfidf_vectorizer)
 
-# Perform search
-search_results = search(query, tfidf_matrix, tfidf_vectorizer)
+    # Display search results
+    print("Query:", query)
+    for i, result in enumerate(search_results, start=1):
+        print(f"\nRank: {i}")
+        print("Document ID:", result[0])
+        print("Document:", result[1])
+        print("Similarity Score:", result[2])
+        print("----------------------")
 
-# Display search results
-print("Query:", query)
-for i, result in enumerate(search_results, start=1):
-    print(f"\nRank: {i}")
-    print("Document ID:", result[0])
-    print("Document:", result[1])
-    print("Similarity Score:", result[2])
-    print("----------------------")
+    # Display the highest rank cosine score
+    highest_rank_score = max(result[2] for result in search_results)
+    print("The highest rank cosine score is:", highest_rank_score)
 
-# Get the highest rank cosine score
-highest_rank_score = max(result[2] for result in search_results)
-print("The highest rank cosine score is:", highest_rank_score)
 ### Output:
 
 ### Result:
