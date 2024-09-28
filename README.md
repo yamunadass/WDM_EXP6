@@ -27,14 +27,14 @@ import nltk
 nltk.download('punkt')
 nltk.download('stopwords')
 
-'''Sample documents stored in a dictionary'''
+//Sample documents stored in a dictionary
 documents = {
     "doc1": "This is the first document.",
     "doc2": "This document is the second document.",
     "doc3": "And this is the third one.",
     "doc4": "Is this the first document?",
 }
-'''Preprocessing function to tokenize and remove stopwords/punctuation'''
+//Preprocessing function to tokenize and remove stopwords/punctuation
 def preprocess_text(text):
     tokens = word_tokenize(text.lower())
     tokens = [token for token in tokens if token not in stopwords.words("english") and token not in string.punctuation]
