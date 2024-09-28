@@ -15,12 +15,13 @@ sklearn to demonstrate Information Retrieval using the Vector Space Model.
 5. Execute a sample query and display the search results along with similarity scores.
 
 ### Program:
-import nltk
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-import string
+
+    import nltk
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+    from nltk.tokenize import word_tokenize
+    from nltk.corpus import stopwords
+    import string
 
 # Download necessary NLTK data
 nltk.download('punkt')
